@@ -111,22 +111,20 @@ class HtmlFontParser {
 	}
 
 	onopentag = (name, attribs: { size?: string, color?: string }) => {
-		if (name === "font") {
-			this.indexArr.push(this.result.length);
-			let style: HtmlFontStyle = null;
-			if (attribs.size != null) {
-				if (style == null) style = {};
-				style.fontSize = +attribs.size;
-			}
-			if (attribs.color != null) {
-				if (style == null) style = {};
-				style.color = attribs.color;
-			}
-			let obj: HtmlFontBegin = {};
-			obj.beginTag = name;
-			obj.style = style;
-			this.result.push(obj);
+		this.indexArr.push(this.result.length);
+		let style: HtmlFontStyle = null;
+		if (attribs.size != null) {
+			if (style == null) style = {};
+			style.fontSize = +attribs.size;
 		}
+		if (attribs.color != null) {
+			if (style == null) style = {};
+			style.color = attribs.color;
+		}
+		let obj: HtmlFontBegin = {};
+		obj.beginTag = name;
+		obj.style = style;
+		this.result.push(obj);
 	};
 	ontext = (text) => {
 		let obj: HtmlFontText = {};
@@ -143,18 +141,16 @@ class HtmlFontParser {
 		this.result.push(obj);
 	};
 	onclosetag = (name) => {
-		if (name === "font") {
-			let obj: HtmlFontEnd = {};
-			let beginTagIndex = this.indexArr.pop();
+		let obj: HtmlFontEnd = {};
+		let beginTagIndex = this.indexArr.pop();
 
-			let beginItem: HtmlFontBegin = this.result[beginTagIndex];
-			beginItem.endTagIndex = this.result.length;
+		let beginItem: HtmlFontBegin = this.result[beginTagIndex];
+		beginItem.endTagIndex = this.result.length;
 
-			obj.endTag = name;
-			obj.beginTagIndex = beginTagIndex;
+		obj.endTag = name;
+		obj.beginTagIndex = beginTagIndex;
 
-			this.result.push(obj);
-		}
+		this.result.push(obj);
 	};
 	onend = () => {
 	};
